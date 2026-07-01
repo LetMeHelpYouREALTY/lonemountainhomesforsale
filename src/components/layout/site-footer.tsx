@@ -26,6 +26,22 @@ export function SiteFooter() {
                 </li>
                 <li>
                   <Link
+                    href="/amenities"
+                    className="text-amber-900 underline-offset-2 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700"
+                  >
+                    Amenities &amp; maps
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/zip-codes/89129"
+                    className="text-amber-900 underline-offset-2 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700"
+                  >
+                    ZIP 89129 guide
+                  </Link>
+                </li>
+                <li>
+                  <Link
                     href="/open-houses"
                     className="text-amber-900 underline-offset-2 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700"
                   >

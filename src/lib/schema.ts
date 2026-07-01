@@ -104,3 +104,96 @@ export function faqPageJsonLd(items: FaqItem[]): Record<string, unknown> {
     })),
   };
 }
+
+type BreadcrumbItem = { name: string; path: string };
+
+export function breadcrumbJsonLd(items: BreadcrumbItem[]): Record<string, unknown> {
+  const base = siteContact.siteUrl.replace(/\/$/, "");
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: `${base}${item.path}`,
+    })),
+  };
+}
+
+/** Geo anchor for Lone Mountain butte — supports local Place / AEO citations */
+export function loneMountainPlaceJsonLd(): Record<string, unknown> {
+  const base = siteContact.siteUrl.replace(/\/$/, "");
+  return {
+    "@context": "https://schema.org",
+    "@type": "Place",
+    "@id": `${base}/#lone-mountain-place`,
+    name: "Lone Mountain, Las Vegas, NV 89129",
+    description:
+      "Northwest Las Vegas neighborhood anchored by the Lone Mountain butte, perimeter trails, and ZIP 89129 residential pockets.",
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: 36.23833,
+      longitude: -115.31639,
+    },
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Las Vegas",
+      addressRegion: "NV",
+      postalCode: "89129",
+      addressCountry: "US",
+    },
+    containedInPlace: {
+      "@type": "City",
+      name: "Las Vegas",
+      addressRegion: "NV",
+    },
+  };
+}
+
+type ServiceOffer = { name: string; description: string; url: string };
+
+export function serviceCatalogJsonLd(services: ServiceOffer[]): Record<string, unknown> {
+  const base = siteContact.siteUrl.replace(/\/$/, "");
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    serviceType: "Real estate brokerage — Lone Mountain & northwest Las Vegas",
+    provider: { "@id": `${base}/#agent` },
+    areaServed: {
+      "@type": "Place",
+      name: siteContact.primaryArea,
+    },
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "Lone Mountain real estate services",
+      itemListElement: services.map((s) => ({
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: s.name,
+          description: s.description,
+          url: s.url.startsWith("http") ? s.url : `${base}${s.url}`,
+        },
+      })),
+    },
+  };
+}
+
+type ItemListEntry = { name: string; description: string; url?: string };
+
+export function itemListJsonLd(name: string, items: ItemListEntry[]): Record<string, unknown> {
+  const base = siteContact.siteUrl.replace(/\/$/, "");
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name,
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      description: item.description,
+      ...(item.url ? { url: item.url.startsWith("http") ? item.url : `${base}${item.url}` } : {}),
+    })),
+  };
+}
