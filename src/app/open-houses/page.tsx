@@ -1,20 +1,36 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { OpenHousesMapBlock } from "@/components/sections/open-houses-map-block";
+import { PageBreadcrumbs } from "@/components/sections/page-breadcrumbs";
+import { JsonLd } from "@/components/seo/json-ld";
+import { breadcrumbJsonLd } from "@/lib/schema";
 import { siteContact } from "@/lib/site-contact";
 
 export const metadata: Metadata = {
   title: "Open Houses Near Lone Mountain & ZIP 89129 | Las Vegas NW",
   description: `Weekend open houses around Lone Mountain, Las Vegas 89129, Skye Canyon, and Centennial Hills—map, legend, and private tours with ${siteContact.businessName}. Call ${siteContact.phoneDisplay}.`,
   alternates: { canonical: "/open-houses" },
+  robots: { index: true, follow: true },
 };
+
+const breadcrumbs = [
+  { name: "Home", path: "/" },
+  { name: "Open houses", path: "/open-houses" },
+] as const;
 
 export default function OpenHousesPage() {
   return (
     <main id="main-content" className="flex-1">
+      <JsonLd data={breadcrumbJsonLd([...breadcrumbs])} />
       <section className="border-b border-stone-200 bg-stone-50 py-12 sm:py-14">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <h1 className="text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">
+          <PageBreadcrumbs
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Open houses" },
+            ]}
+          />
+          <h1 className="mt-4 text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">
             Open houses near Lone Mountain (89129) and northwest Las Vegas
           </h1>
           <p className="mt-3 max-w-3xl text-lg text-stone-700">

@@ -1,4 +1,9 @@
 import type { NextConfig } from "next";
+import {
+  legacyExactRedirects,
+  legacyListingSlugRedirect,
+  legacyMessagePathRedirect,
+} from "./src/lib/legacy-redirects";
 
 const csp = [
   "default-src 'self'",
@@ -15,6 +20,25 @@ const csp = [
 const nextConfig: NextConfig = {
   turbopack: {
     root: __dirname,
+  },
+  async redirects() {
+    return [
+      ...legacyExactRedirects.map(({ source, destination }) => ({
+        source,
+        destination,
+        permanent: true,
+      })),
+      {
+        source: legacyListingSlugRedirect.source,
+        destination: legacyListingSlugRedirect.destination,
+        permanent: true,
+      },
+      {
+        source: legacyMessagePathRedirect.source,
+        destination: legacyMessagePathRedirect.destination,
+        permanent: true,
+      },
+    ];
   },
   async headers() {
     return [

@@ -1,18 +1,29 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { GoogleMapEmbed } from "@/components/sections/google-map-embed";
+import { PageBreadcrumbs } from "@/components/sections/page-breadcrumbs";
+import { JsonLd } from "@/components/seo/json-ld";
+import { breadcrumbJsonLd } from "@/lib/schema";
 import { siteContact } from "@/lib/site-contact";
 
 export const metadata: Metadata = {
   title: `Contact ${siteContact.businessName} | Lone Mountain & Las Vegas`,
   description: `Call ${siteContact.phoneDisplay}, email ${siteContact.email}, or visit ${siteContact.legalBrokerage} on W Lake Mead Blvd. Lone Mountain ZIP 89129, Skye Canyon, and northwest Las Vegas real estate.`,
   alternates: { canonical: "/contact" },
+  robots: { index: true, follow: true },
 };
+
+const breadcrumbs = [
+  { name: "Home", path: "/" },
+  { name: "Contact", path: "/contact" },
+] as const;
 
 export default function ContactPage() {
   return (
     <main id="main-content" className="mx-auto flex-1 max-w-6xl px-4 py-12 sm:px-6">
-      <h1 className="text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">
+      <JsonLd data={breadcrumbJsonLd([...breadcrumbs])} />
+      <PageBreadcrumbs items={[{ label: "Home", href: "/" }, { label: "Contact" }]} />
+      <h1 className="mt-4 text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">
         Contact {siteContact.businessName}
       </h1>
       <p className="mt-3 max-w-2xl text-lg text-stone-600">

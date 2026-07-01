@@ -176,6 +176,12 @@ export default function HomePage() {
               >
                 View Google listing
               </a>
+              <Link
+                href="/contact"
+                className="rounded-md border border-stone-300 bg-white px-4 py-2 text-sm font-semibold text-stone-800 shadow-sm hover:bg-stone-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700"
+              >
+                Contact page
+              </Link>
             </div>
           </div>
           <GoogleMapEmbed title="Map of Berkshire Hathaway HomeServices Nevada Properties office on W Lake Mead Blvd" />

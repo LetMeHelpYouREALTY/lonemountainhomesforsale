@@ -12,6 +12,21 @@ export default function NotFound() {
     >
       <h1 className="text-2xl font-semibold text-stone-900">Page not found</h1>
       <p className="mt-2 text-stone-600">That URL may be outdated or mistyped.</p>
+      <p className="mt-4 text-sm text-stone-600">
+        Try{" "}
+        <Link href="/search" className={linkClass}>
+          homes for sale
+        </Link>
+        ,{" "}
+        <Link href="/tour" className={linkClass}>
+          schedule a tour
+        </Link>
+        , or{" "}
+        <Link href="/open-houses" className={linkClass}>
+          open houses
+        </Link>
+        .
+      </p>
       <Link
         href="/"
         className="mt-8 rounded-md bg-amber-700 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700"

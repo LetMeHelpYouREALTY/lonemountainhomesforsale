@@ -1,19 +1,35 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { PageBreadcrumbs } from "@/components/sections/page-breadcrumbs";
+import { JsonLd } from "@/components/seo/json-ld";
+import { breadcrumbJsonLd } from "@/lib/schema";
 import { siteContact } from "@/lib/site-contact";
 
 export const metadata: Metadata = {
   title: "Lone Mountain Las Vegas 89129 Neighborhood Guide | Homes & Lifestyle",
   description: `Lone Mountain ZIP 89129 guide: northwest Las Vegas lifestyle, 215 beltway access, Skye Canyon and Centennial Hills proximity, and homes for sale with ${siteContact.businessName}.`,
   alternates: { canonical: "/neighborhoods/lone-mountain" },
+  robots: { index: true, follow: true },
 };
+
+const breadcrumbs = [
+  { name: "Home", path: "/" },
+  { name: "Lone Mountain guide", path: "/neighborhoods/lone-mountain" },
+] as const;
 
 export default function LoneMountainNeighborhoodPage() {
   return (
     <main id="main-content" className="flex-1">
+      <JsonLd data={breadcrumbJsonLd([...breadcrumbs])} />
       <article className="border-b border-stone-200 bg-white py-12 sm:py-16">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
-          <p className="text-sm font-medium uppercase tracking-wide text-amber-800">
+          <PageBreadcrumbs
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Lone Mountain guide" },
+            ]}
+          />
+          <p className="mt-4 text-sm font-medium uppercase tracking-wide text-amber-800">
             Northwest Las Vegas · ZIP 89129
           </p>
           <h1 className="mt-2 text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">

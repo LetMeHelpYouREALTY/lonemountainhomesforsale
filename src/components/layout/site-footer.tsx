@@ -118,7 +118,10 @@ export function SiteFooter() {
         </div>
         <p className="mt-8 text-xs text-stone-500">
           MLS listing data is displayed via third-party search tools. Availability, price, and status
-          should be verified with {siteContact.businessName}.
+          should be verified with {siteContact.businessName}.{" "}
+          <Link href="/privacy" className="underline underline-offset-2 hover:text-stone-700">
+            Privacy Policy
+          </Link>
         </p>
       </div>
     </footer>
