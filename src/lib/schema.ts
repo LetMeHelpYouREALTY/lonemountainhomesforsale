@@ -207,14 +207,27 @@ export function verifiedNearbyPlacesItemListJsonLd(
       item: {
         "@type": place.schemaType,
         name: place.name,
-        address: {
-          "@type": "PostalAddress",
-          streetAddress: place.address,
-          addressLocality: place.locality,
-          addressRegion: place.region,
-          postalCode: place.postalCode,
-          addressCountry: "US",
-        },
+        url: place.sourceUrl,
+        ...(place.address
+          ? {
+              address: {
+                "@type": "PostalAddress",
+                streetAddress: place.address,
+                addressLocality: place.locality,
+                addressRegion: place.region,
+                ...(place.postalCode ? { postalCode: place.postalCode } : {}),
+                addressCountry: "US",
+              },
+            }
+          : {
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: place.locality,
+                addressRegion: place.region,
+                ...(place.postalCode ? { postalCode: place.postalCode } : {}),
+                addressCountry: "US",
+              },
+            }),
         ...(place.geo
           ? {
               geo: {

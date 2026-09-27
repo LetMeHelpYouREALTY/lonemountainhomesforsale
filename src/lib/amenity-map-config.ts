@@ -60,7 +60,7 @@ export const amenityFilterLabels: Record<AmenityFilterId, string> = {
   schools: "Schools",
 };
 
-/** Places API (New) primary types — also mapped to legacy Nearby Search where needed */
+/** Places API (New) primary types — one searchNearby call per filter with all types listed */
 export const placesApiTypesByFilter: Record<AmenityFilterId, string[]> = {
   restaurants: ["restaurant"],
   cafes: ["cafe", "bakery"],
@@ -75,21 +75,7 @@ export const placesApiTypesByFilter: Record<AmenityFilterId, string[]> = {
   schools: ["school", "primary_school", "secondary_school"],
 };
 
-/** Legacy PlacesService `type` for fallback (first entry per filter) */
-export const legacyNearbyTypeByFilter: Partial<Record<AmenityFilterId, string>> = {
-  restaurants: "restaurant",
-  cafes: "cafe",
-  grocery: "grocery_or_supermarket",
-  parks: "park",
-  golf: "golf_course",
-  healthcare: "hospital",
-  pharmacies: "pharmacy",
-  shopping: "shopping_mall",
-  fitness: "gym",
-  schools: "school",
-};
-
-export const amenitySearchRadiusMeters = 8000;
+export const amenitySearchRadiusMeters = 5000;
 
 export function getGoogleMapsApiKey(): string | undefined {
   const key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY?.trim();
@@ -113,9 +99,8 @@ export function googleMapsEmbedAtCoordinates(
 ): string {
   const params = new URLSearchParams({
     q: `${lat},${lng}`,
-    hl: "en",
     z: String(zoom),
     output: "embed",
   });
-  return `https://maps.google.com/maps?${params.toString()}`;
+  return `https://www.google.com/maps?${params.toString()}`;
 }

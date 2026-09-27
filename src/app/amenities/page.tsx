@@ -68,8 +68,8 @@ export default function AmenitiesPage() {
             Buyers searching Lone Mountain and <strong>ZIP 89129</strong> ask about parks, beltway
             access, groceries, and hospitals before they tour. This page maps verified anchors around{" "}
             <strong>{loneMountainCommunityCenter.landmarkName}</strong> (
-            {loneMountainCommunityCenter.landmarkAddress}) with an interactive Google Maps layer
-            when your site key is configured—and a static fallback list when it is not.
+            {loneMountainCommunityCenter.landmarkAddress}) with an interactive map and a curated
+            fallback list when live map data is unavailable.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link

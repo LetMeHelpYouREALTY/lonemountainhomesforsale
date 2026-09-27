@@ -18,40 +18,45 @@ export type CuratedNearbyPlace = {
   name: string;
   filters: AmenityFilterId[];
   schemaType: SchemaPlaceType;
-  address: string;
+  /** Verified street address only — omit when not confirmed from sourceUrl */
+  address?: string;
   locality: string;
   region: string;
-  postalCode: string;
+  postalCode?: string;
   description: string;
+  sourceUrl: string;
   geo?: { latitude: number; longitude: number };
 };
 
 /** Verified names & addresses for static HTML, fallback lists, and JSON-LD only */
 export const curatedNearbyPlaces: CuratedNearbyPlace[] = [
   {
-    id: "lone-mountain-regional-park",
-    name: "Lone Mountain Regional Park",
+    id: "lone-mountain-discovery-park",
+    name: "Lone Mountain Discovery Park",
     filters: ["parks"],
     schemaType: "Park",
     address: "4445 N Jensen St",
     locality: "Las Vegas",
     region: "NV",
     postalCode: "89129",
+    sourceUrl:
+      "https://www.clarkcountynv.gov/government/departments/parks___recreation/services/area_reservations/",
     description:
-      "Clark County park with a multi-use base loop, tennis, basketball, and equestrian paths—everyday recreation for 89129 buyers.",
-    geo: { latitude: 36.2389, longitude: -115.3145 },
+      "Clark County park with dog areas, courts, and trail access around the Lone Mountain butte—everyday recreation for 89129 buyers.",
+    geo: { latitude: 36.23932, longitude: -115.30911 },
   },
   {
-    id: "lone-mountain-discovery-park",
-    name: "Lone Mountain Discovery Park",
-    filters: ["parks"],
+    id: "mountain-crest-park",
+    name: "Mountain Crest Park",
+    filters: ["parks", "fitness"],
     schemaType: "Park",
-    address: "N Jensen St",
+    address: "4701 N Durango Dr",
     locality: "Las Vegas",
     region: "NV",
     postalCode: "89129",
-    description: "Trailhead access along Jensen Road for the perimeter route around Lone Mountain.",
-    geo: { latitude: 36.23932, longitude: -115.30911 },
+    sourceUrl: "https://parkslocator.clarkcountynv.gov/Search/ParkDetail?parkId=29",
+    description:
+      "Clark County neighborhood park with a walking loop, disc golf, splash pad, and community center near Lone Mountain pockets.",
   },
   {
     id: "craig-ranch-regional-park",
@@ -62,19 +67,10 @@ export const curatedNearbyPlaces: CuratedNearbyPlace[] = [
     locality: "North Las Vegas",
     region: "NV",
     postalCode: "89032",
+    sourceUrl:
+      "https://www.cityofnorthlasvegas.com/things-to-do/parks-and-recreation/parks/craig-ranch-regional-park",
     description:
-      "Large regional park along Lone Mountain Road with sports fields and community events—popular for northwest families.",
-  },
-  {
-    id: "mountain-crest-park",
-    name: "Mountain Crest Park",
-    filters: ["parks"],
-    schemaType: "Park",
-    address: "6200 Brent Ln",
-    locality: "Las Vegas",
-    region: "NV",
-    postalCode: "89130",
-    description: "Northwest park with disc golf and open recreation space near Lone Mountain pockets.",
+      "170-acre City of North Las Vegas regional park along Craig Road with fields, splash pad, and amphitheater—common weekend stop from northwest 89129.",
   },
   {
     id: "smiths-craig",
@@ -85,30 +81,9 @@ export const curatedNearbyPlaces: CuratedNearbyPlace[] = [
     locality: "North Las Vegas",
     region: "NV",
     postalCode: "89032",
+    sourceUrl: "https://www.smithsfoodanddrug.com/stores/grocery/nv/north-las-vegas/craig-road/687/68754",
     description:
-      "Full-service grocery with pharmacy on Craig Road—common errand run from Lone Mountain and the 215 northwest corridor.",
-  },
-  {
-    id: "craig-marketplace",
-    name: "Craig Marketplace",
-    filters: ["shopping", "grocery"],
-    schemaType: "ShoppingCenter",
-    address: "Craig Rd & Camino Al Norte",
-    locality: "Las Vegas",
-    region: "NV",
-    postalCode: "89129",
-    description: "Retail and grocery-anchored center along Craig Road near beltway access.",
-  },
-  {
-    id: "centennial-center",
-    name: "Centennial Center",
-    filters: ["shopping"],
-    schemaType: "ShoppingCenter",
-    address: "Centennial Pkwy",
-    locality: "Las Vegas",
-    region: "NV",
-    postalCode: "89149",
-    description: "Retail cluster along the Centennial Parkway / CC-215 northwest corridor.",
+      "Full-service Smith's grocery with pharmacy on Craig Road—common errand run from Lone Mountain and the 215 northwest corridor.",
   },
   {
     id: "centennial-hills-hospital",
@@ -119,6 +94,7 @@ export const curatedNearbyPlaces: CuratedNearbyPlace[] = [
     locality: "Las Vegas",
     region: "NV",
     postalCode: "89149",
+    sourceUrl: "https://www.centennialhillshospital.com/about",
     description:
       "Acute-care hospital serving northwest Las Vegas—buyers often confirm emergency and specialist access from their block.",
   },
@@ -130,8 +106,10 @@ export const curatedNearbyPlaces: CuratedNearbyPlace[] = [
     address: "8680 W Hammer Ln",
     locality: "Las Vegas",
     region: "NV",
-    postalCode: "89129",
-    description: "CCSD elementary school serving parts of northwest 89129—verify assignment per listing.",
+    postalCode: "89149",
+    sourceUrl: "https://deanlamarallenes.ccsd.net/staff-directory",
+    description:
+      "CCSD elementary school serving parts of northwest Las Vegas—verify assignment for each listing address with the CCSD Zoning Search.",
   },
   {
     id: "centennial-high",
@@ -142,7 +120,9 @@ export const curatedNearbyPlaces: CuratedNearbyPlace[] = [
     locality: "Las Vegas",
     region: "NV",
     postalCode: "89149",
-    description: "Large northwest high school; programs and athletics draw families to the corridor.",
+    sourceUrl: "https://www.centennialhighschool.org/apps/contact/",
+    description:
+      "CCSD high school in the northwest valley—confirm which CCSD schools are assigned to each Lone Mountain address with the CCSD Zoning Search.",
   },
 ];
 
@@ -154,7 +134,7 @@ export const amenitiesPageFaqs = [
   {
     question: "What grocery stores are near Lone Mountain Las Vegas?",
     answer:
-      "Smith's Food and Drug on West Craig Road and grocery-anchored centers such as Craig Marketplace are common errand stops from ZIP 89129—drive time depends on your exact pocket near the butte or the 215.",
+      "Smith's Food and Drug on West Craig Road is a common grocery stop from ZIP 89129—drive time depends on your exact pocket near the butte or the 215.",
   },
   {
     question: "How far is Lone Mountain from the Las Vegas Strip?",
@@ -169,7 +149,7 @@ export const amenitiesPageFaqs = [
   {
     question: "What parks can I walk or hike near Lone Mountain?",
     answer:
-      "Lone Mountain Regional Park and Lone Mountain Discovery Park anchor daily recreation, with Craig Ranch Regional Park and Mountain Crest Park a short drive away for fields, events, or disc golf.",
+      "Lone Mountain Discovery Park and Mountain Crest Park anchor daily recreation, with Craig Ranch Regional Park a short drive away for fields, splash pad, and events.",
   },
   {
     question: "How do I reach the 215 beltway from Lone Mountain?",
@@ -182,9 +162,9 @@ export const amenitiesPageFaqs = [
       "Airport drive times from northwest 89129 are commonly in the 30–45 minute range depending on traffic and whether you use US-95 and the 215—label any estimate approximate and test your commute.",
   },
   {
-    question: "Which schools serve Lone Mountain ZIP 89129?",
+    question: "Which CCSD schools are assigned to Lone Mountain ZIP 89129 addresses?",
     answer:
-      "Clark County School District boundaries shift—Dean LaMar Allen Elementary, Escobado or Leavitt middle schools, and Centennial High may serve parts of the area, but you must confirm the assignment for each listing address before you offer.",
+      "Clark County School District boundaries shift by street, not ZIP alone. Dean LaMar Allen Elementary, Escobado or Leavitt middle schools, and Centennial High may serve parts of the area—confirm each listing address with the CCSD Zoning Search before you offer.",
   },
   {
     question: "Is Downtown Summerlin close to Lone Mountain?",
@@ -202,7 +182,7 @@ export const amenityCategoryWriteups: {
     id: "parks",
     title: "Parks & recreation",
     body:
-      "The namesake Lone Mountain butte rises above northwest Las Vegas with a multi-mile perimeter trail. Clark County maintains Lone Mountain Regional Park and the Discovery Park trailhead on Jensen Street, while Craig Ranch Regional Park adds fields and events along Lone Mountain Road.",
+      "The namesake Lone Mountain butte rises above northwest Las Vegas with a multi-mile perimeter trail. Clark County maintains Lone Mountain Discovery Park on Jensen Street, Mountain Crest Park on Durango Drive, and Craig Ranch Regional Park adds 170 acres of fields and events along Craig Road.",
   },
   {
     id: "restaurants",
@@ -214,13 +194,13 @@ export const amenityCategoryWriteups: {
     id: "grocery",
     title: "Grocery & errands",
     body:
-      "Smith's on West Craig Road and centers such as Craig Marketplace cover weekly groceries without a Summerlin detour. Pharmacy counters inside major grocers are common for northwest errands.",
+      "Smith's on West Craig Road covers weekly groceries without a Summerlin detour. Pharmacy counters inside major grocers are common for northwest errands.",
   },
   {
     id: "golf",
     title: "Golf",
     body:
-      "Public and resort courses spread across the northwest and Summerlin corridors; tee times and drive time vary by course and traffic. The interactive map surfaces golf facilities within a few miles of Lone Mountain when the Google Maps key is configured.",
+      "Public and resort courses spread across the northwest and Summerlin corridors; tee times and drive time vary by course and traffic. The interactive map surfaces golf facilities within a few miles of Lone Mountain when maps load successfully.",
   },
   {
     id: "healthcare",
@@ -232,13 +212,13 @@ export const amenityCategoryWriteups: {
     id: "shopping",
     title: "Shopping",
     body:
-      "Craig Marketplace, Centennial Center, and power centers along the 215 beltway keep apparel, home goods, and services inside the northwest valley.",
+      "Craig Road and Centennial Parkway retail strips keep apparel, home goods, and services inside the northwest valley without a cross-town drive.",
   },
   {
     id: "schools",
     title: "Schools",
     body:
-      "CCSD assigns schools by address, not ZIP alone. Dean LaMar Allen Elementary, Escobado or Leavitt middle schools, and Centennial High appear on many buyer checklists—verify boundaries on the district site for each home you tour.",
+      "CCSD assigns schools by address, not ZIP alone. Which CCSD schools are assigned to Lone Mountain addresses? Verify with the CCSD Zoning Search for each home you tour—Dean LaMar Allen Elementary, Escobado or Leavitt middle schools, and Centennial High appear on many buyer checklists.",
   },
   {
     id: "commute",

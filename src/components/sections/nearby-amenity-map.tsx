@@ -4,34 +4,17 @@ import { useCallback, useEffect, useId, useRef, useState } from "react";
 import {
   amenityFilterLabels,
   amenityFilterOrder,
-  amenitySearchRadiusMeters,
   getGoogleMapsApiKey,
   getGoogleMapsMapId,
   googleMapsDirectionsUrl,
   googleMapsEmbedAtCoordinates,
-  legacyNearbyTypeByFilter,
   loneMountainCommunityCenter,
   placesApiTypesByFilter,
   type AmenityFilterId,
 } from "@/lib/amenity-map-config";
 import { curatedPlacesForFilter } from "@/lib/curated-nearby-places";
-
-function readDisplayName(value: unknown): string {
-  if (typeof value === "string") return value;
-  if (value && typeof value === "object" && "text" in value) {
-    return String((value as { text: string }).text);
-  }
-  return "Place";
-}
-
-type MapPlaceResult = {
-  id: string;
-  name: string;
-  address?: string;
-  rating?: number;
-  lat: number;
-  lng: number;
-};
+import { loadGoogleMaps, mapsAuthFailed } from "@/lib/google-maps-loader";
+import { searchCategory, type NearbyPlaceResult } from "@/lib/places-search";
 
 type NearbyAmenityMapProps = {
   defaultFilter?: AmenityFilterId;
@@ -48,34 +31,6 @@ const mapCenter = {
   lat: loneMountainCommunityCenter.latitude,
   lng: loneMountainCommunityCenter.longitude,
 };
-
-function loadGoogleMapsScript(apiKey: string): Promise<void> {
-  if (typeof window === "undefined") {
-    return Promise.reject(new Error("no window"));
-  }
-  if (window.google?.maps) {
-    return Promise.resolve();
-  }
-  const existing = document.querySelector<HTMLScriptElement>(
-    'script[data-lmh-google-maps="1"]',
-  );
-  if (existing) {
-    return new Promise((resolve, reject) => {
-      existing.addEventListener("load", () => resolve());
-      existing.addEventListener("error", () => reject(new Error("script error")));
-    });
-  }
-  return new Promise((resolve, reject) => {
-    const script = document.createElement("script");
-    script.dataset.lmhGoogleMaps = "1";
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&libraries=places,marker&loading=async`;
-    script.async = true;
-    script.defer = true;
-    script.onload = () => resolve();
-    script.onerror = () => reject(new Error("Google Maps script failed"));
-    document.head.appendChild(script);
-  });
-}
 
 function useLazyVisible(rootMargin = "200px") {
   const ref = useRef<HTMLDivElement>(null);
@@ -105,8 +60,8 @@ function CuratedFallbackList({ filter }: { filter: AmenityFilterId }) {
   if (places.length === 0) {
     return (
       <p className="text-sm text-stone-600">
-        Nearby {amenityFilterLabels[filter].toLowerCase()} appear on the interactive map when Google
-        Maps is enabled. Browse other categories or call for a neighborhood tour.
+        Curated {amenityFilterLabels[filter].toLowerCase()} for Lone Mountain are listed on other
+        categories—try parks, grocery, or schools, or call for a neighborhood tour.
       </p>
     );
   }
@@ -115,7 +70,14 @@ function CuratedFallbackList({ filter }: { filter: AmenityFilterId }) {
       {places.map((p) => (
         <li key={p.id} className="rounded-md border border-stone-200 bg-white px-3 py-2">
           <span className="font-medium text-stone-900">{p.name}</span>
-          <span className="text-stone-600"> — {p.address}, {p.locality}, {p.region} {p.postalCode}</span>
+          {p.address ? (
+            <span className="text-stone-600">
+              {" "}
+              — {p.address}, {p.locality}, {p.region} {p.postalCode}
+            </span>
+          ) : (
+            <span className="text-stone-600"> — {p.locality}, {p.region}</span>
+          )}
         </li>
       ))}
     </ul>
@@ -124,7 +86,7 @@ function CuratedFallbackList({ filter }: { filter: AmenityFilterId }) {
 
 function EmbedFallback({ compact }: { compact?: boolean }) {
   const { latitude, longitude, name } = loneMountainCommunityCenter;
-  const src = googleMapsEmbedAtCoordinates(latitude, longitude, 13);
+  const src = googleMapsEmbedAtCoordinates(latitude, longitude, 14);
   return (
     <iframe
       title={`Map centered on ${name}, Las Vegas`}
@@ -135,6 +97,36 @@ function EmbedFallback({ compact }: { compact?: boolean }) {
       allowFullScreen
     />
   );
+}
+
+function buildInfoWindowContent(place: NearbyPlaceResult): HTMLElement {
+  const root = document.createElement("div");
+  root.style.maxWidth = "240px";
+  root.style.fontFamily = "system-ui, sans-serif";
+
+  const title = document.createElement("p");
+  title.style.fontWeight = "600";
+  title.style.margin = "0 0 4px";
+  title.textContent = place.name;
+  root.appendChild(title);
+
+  if (place.address) {
+    const address = document.createElement("p");
+    address.className = "text-sm";
+    address.textContent = place.address;
+    root.appendChild(address);
+  }
+
+  const link = document.createElement("a");
+  link.href = place.mapsUri ?? googleMapsDirectionsUrl(place.lat, place.lng, place.name);
+  link.target = "_blank";
+  link.rel = "noopener";
+  link.textContent = "Directions";
+  link.style.display = "inline-block";
+  link.style.marginTop = "8px";
+  root.appendChild(link);
+
+  return root;
 }
 
 export function NearbyAmenityMap({
@@ -153,46 +145,52 @@ export function NearbyAmenityMap({
   const { ref: lazyRootRef, visible: isInView } = useLazyVisible();
   const [activeFilter, setActiveFilter] = useState<AmenityFilterId>(defaultFilter);
   const [mapStatus, setMapStatus] = useState<"pending" | "loading" | "ready">("pending");
-  const [loadError, setLoadError] = useState(false);
-  const [livePlaces, setLivePlaces] = useState<MapPlaceResult[]>([]);
+  const [useFallback, setUseFallback] = useState(() => mapsAuthFailed || !getGoogleMapsApiKey());
+  const [placesSearchFailed, setPlacesSearchFailed] = useState(false);
 
   const apiKey = getGoogleMapsApiKey();
   const mapId = getGoogleMapsMapId();
 
-  const showEmbedFallback = !apiKey || loadError;
+  const showEmbedFallback = !apiKey || useFallback;
   const mapIsReady = mapStatus === "ready" && !showEmbedFallback;
+
+  const enterFallback = useCallback(() => {
+    setUseFallback(true);
+    markersRef.current.forEach((m) => m.setMap(null));
+    markersRef.current = [];
+    communityMarkerRef.current?.setMap(null);
+    communityMarkerRef.current = null;
+    mapInstanceRef.current = null;
+    if (mapContainerRef.current) {
+      mapContainerRef.current.replaceChildren();
+    }
+    setMapStatus("pending");
+  }, []);
+
+  useEffect(() => {
+    const onAuthFailure = () => enterFallback();
+    window.addEventListener("gmaps:auth-failure", onAuthFailure);
+    return () => window.removeEventListener("gmaps:auth-failure", onAuthFailure);
+  }, [enterFallback]);
 
   const clearMarkers = useCallback(() => {
     markersRef.current.forEach((m) => m.setMap(null));
     markersRef.current = [];
   }, []);
 
-  const showInfo = useCallback((place: MapPlaceResult) => {
+  const showInfo = useCallback((place: NearbyPlaceResult) => {
     const map = mapInstanceRef.current;
     if (!map) return;
     if (!infoWindowRef.current) {
       infoWindowRef.current = new google.maps.InfoWindow();
     }
-    const ratingLine =
-      place.rating !== undefined ? `<p class="text-sm">Rating: ${place.rating.toFixed(1)}</p>` : "";
-    const addressLine = place.address
-      ? `<p class="text-sm">${place.address}</p>`
-      : "";
-    const directions = googleMapsDirectionsUrl(place.lat, place.lng, place.name);
-    infoWindowRef.current.setContent(
-      `<div style="max-width:240px;font-family:system-ui,sans-serif">
-        <p style="font-weight:600;margin:0 0 4px">${place.name}</p>
-        ${ratingLine}
-        ${addressLine}
-        <p style="margin:8px 0 0"><a href="${directions}" target="_blank" rel="noopener">Directions</a></p>
-      </div>`,
-    );
+    infoWindowRef.current.setContent(buildInfoWindowContent(place));
     infoWindowRef.current.setPosition({ lat: place.lat, lng: place.lng });
     infoWindowRef.current.open({ map });
   }, []);
 
   const renderMarkers = useCallback(
-    (places: MapPlaceResult[]) => {
+    (places: NearbyPlaceResult[]) => {
       const map = mapInstanceRef.current;
       if (!map) return;
       clearMarkers();
@@ -229,87 +227,14 @@ export function NearbyAmenityMap({
     });
   }, [showInfo]);
 
-  const fetchPlacesLegacy = useCallback(
-    (filter: AmenityFilterId): Promise<MapPlaceResult[]> => {
-      const map = mapInstanceRef.current;
-      const legacyType = legacyNearbyTypeByFilter[filter];
-      if (!map || !legacyType || !window.google?.maps?.places) {
-        return Promise.resolve([]);
-      }
-      return new Promise((resolve) => {
-        const service = new google.maps.places.PlacesService(map);
-        service.nearbySearch(
-          {
-            location: mapCenter,
-            radius: amenitySearchRadiusMeters,
-            type: legacyType,
-          },
-          (results, status) => {
-            if (status !== google.maps.places.PlacesServiceStatus.OK || !results) {
-              resolve([]);
-              return;
-            }
-            resolve(
-              results.slice(0, 14).map((r, index) => ({
-                id: r.place_id ?? `legacy-${index}`,
-                name: r.name ?? "Place",
-                address: r.vicinity,
-                rating: r.rating,
-                lat: r.geometry?.location?.lat() ?? mapCenter.lat,
-                lng: r.geometry?.location?.lng() ?? mapCenter.lng,
-              })),
-            );
-          },
-        );
-      });
-    },
-    [],
-  );
-
-  const fetchPlacesNew = useCallback(
-    async (filter: AmenityFilterId): Promise<MapPlaceResult[]> => {
-      const types = placesApiTypesByFilter[filter];
-      if (!types.length || !window.google?.maps?.importLibrary) {
-        return fetchPlacesLegacy(filter);
-      }
-      try {
-        const placesLib = (await google.maps.importLibrary("places")) as google.maps.PlacesLibrary;
-        const Place = placesLib.Place;
-        if (!Place?.searchNearby) {
-          return fetchPlacesLegacy(filter);
-        }
-        const { places } = await Place.searchNearby({
-          fields: ["displayName", "location", "formattedAddress", "rating", "id"],
-          locationRestriction: {
-            center: mapCenter,
-            radius: amenitySearchRadiusMeters,
-          },
-          includedPrimaryTypes: types,
-          maxResultCount: 14,
-        });
-        return places.map((p, index) => ({
-          id: p.id ?? `new-${index}`,
-          name: readDisplayName(p.displayName),
-          address: p.formattedAddress ?? undefined,
-          rating: p.rating ?? undefined,
-          lat: p.location?.lat() ?? mapCenter.lat,
-          lng: p.location?.lng() ?? mapCenter.lng,
-        }));
-      } catch {
-        return fetchPlacesLegacy(filter);
-      }
-    },
-    [fetchPlacesLegacy],
-  );
-
   useEffect(() => {
-    if (!isInView || !apiKey || loadError || mapInstanceRef.current) return;
+    if (!isInView || !apiKey || useFallback || mapInstanceRef.current) return;
 
     void (async () => {
       setMapStatus("loading");
       try {
-        await loadGoogleMapsScript(apiKey);
-        if (!mapContainerRef.current) return;
+        await loadGoogleMaps(apiKey);
+        if (useFallback || mapsAuthFailed || !mapContainerRef.current) return;
         const mapOptions: google.maps.MapOptions = {
           center: mapCenter,
           zoom: compact ? 12 : 13,
@@ -323,28 +248,40 @@ export function NearbyAmenityMap({
         ensureCommunityMarker(map);
         setMapStatus("ready");
       } catch {
-        setLoadError(true);
+        enterFallback();
       }
     })();
-  }, [apiKey, compact, ensureCommunityMarker, isInView, loadError, mapId]);
+  }, [apiKey, compact, ensureCommunityMarker, enterFallback, isInView, mapId, useFallback]);
 
   useEffect(() => {
     if (!mapIsReady) return;
     let cancelled = false;
     void (async () => {
-      const results = await fetchPlacesNew(activeFilter);
-      if (cancelled) return;
-      setLivePlaces(results);
-      renderMarkers(results);
+      const types = placesApiTypesByFilter[activeFilter];
+      try {
+        const results = await searchCategory(mapCenter, activeFilter, types);
+        if (cancelled) return;
+        renderMarkers(results);
+        if (results.length === 0) {
+          setPlacesSearchFailed(true);
+        }
+      } catch {
+        if (cancelled) return;
+        clearMarkers();
+        setPlacesSearchFailed(true);
+      }
     })();
     return () => {
       cancelled = true;
     };
-  }, [activeFilter, fetchPlacesNew, mapIsReady, renderMarkers]);
+  }, [activeFilter, clearMarkers, mapIsReady, renderMarkers]);
 
   const heightClass = compact
     ? `h-[min(50vh,360px)] ${MAP_MIN_HEIGHT_CLASS}`
     : `h-[min(55vh,520px)] ${MAP_MIN_HEIGHT_CLASS}`;
+
+  const showCuratedPanel =
+    (showEmbedFallback && isInView) || (mapIsReady && placesSearchFailed);
 
   return (
     <div ref={lazyRootRef} className={className}>
@@ -362,7 +299,10 @@ export function NearbyAmenityMap({
               type="button"
               aria-pressed={pressed}
               aria-label={`Show ${amenityFilterLabels[filter]} near Lone Mountain`}
-              onClick={() => setActiveFilter(filter)}
+              onClick={() => {
+                setPlacesSearchFailed(false);
+                setActiveFilter(filter);
+              }}
               className={`rounded-full px-3 py-1.5 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700 ${
                 pressed
                   ? "bg-amber-700 text-white shadow-sm"
@@ -389,7 +329,7 @@ export function NearbyAmenityMap({
             aria-busy={mapStatus === "loading"}
           />
         )}
-        {apiKey && !loadError && mapStatus === "loading" ? (
+        {apiKey && !useFallback && mapStatus === "loading" ? (
           <div className="absolute inset-0 flex items-center justify-center bg-stone-100 text-sm text-stone-600">
             Loading map…
           </div>
@@ -401,17 +341,10 @@ export function NearbyAmenityMap({
         ) : null}
       </div>
 
-      {showEmbedFallback && isInView ? (
+      {showCuratedPanel ? (
         <div className="mt-4 rounded-lg border border-stone-200 bg-stone-50 p-4">
           <p className="text-sm font-medium text-stone-900">
             Curated {amenityFilterLabels[activeFilter].toLowerCase()} near Lone Mountain
-          </p>
-          <CuratedFallbackList filter={activeFilter} />
-        </div>
-      ) : livePlaces.length === 0 && mapIsReady ? (
-        <div className="mt-4 rounded-lg border border-stone-200 bg-stone-50 p-4">
-          <p className="text-sm text-stone-700">
-            No live results for this filter—try another category or see the curated list below.
           </p>
           <CuratedFallbackList filter={activeFilter} />
         </div>
