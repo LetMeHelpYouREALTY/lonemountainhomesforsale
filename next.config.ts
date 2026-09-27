@@ -7,8 +7,8 @@ import {
 
 const csp = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://em.realscout.com https://www.realscout.com",
-  "connect-src 'self' https://www.realscout.com https://em.realscout.com wss: https:",
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://em.realscout.com https://www.realscout.com https://maps.googleapis.com",
+  "connect-src 'self' https://www.realscout.com https://em.realscout.com https://maps.googleapis.com wss: https:",
   "img-src 'self' data: blob: https:",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com data:",
