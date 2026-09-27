@@ -17,7 +17,7 @@ export function rootMetadata(): Metadata {
       default: `${siteContact.siteName} | Lone Mountain Las Vegas 89129`,
       template: `%s | ${siteContact.siteName}`,
     },
-    description: `Lone Mountain & ZIP 89129 real estate: homes for sale, weekend open houses, and northwest Las Vegas guidance with ${siteContact.businessName} (${siteContact.legalBrokerage}). Call ${siteContact.phoneDisplay}.`,
+    description: `Lone Mountain & 89129 homes for sale, open houses, and northwest Las Vegas buyer guidance with ${siteContact.businessName}. Call ${siteContact.phoneDisplay}.`,
     ...(googleSiteVerification
       ? { verification: { google: googleSiteVerification } }
       : {}),

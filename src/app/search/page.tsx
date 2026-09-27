@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
+import { PageBreadcrumbs } from "@/components/sections/page-breadcrumbs";
 import { RealScoutOfficeListings } from "@/components/realscout/office-listings";
+import { JsonLd } from "@/components/seo/json-ld";
+import { breadcrumbJsonLd } from "@/lib/schema";
 import { siteContact } from "@/lib/site-contact";
 
 export const metadata: Metadata = {
@@ -8,10 +11,17 @@ export const metadata: Metadata = {
   alternates: { canonical: "/search" },
 };
 
+const breadcrumbs = [
+  { name: "Home", path: "/" },
+  { name: "Homes for sale", path: "/search" },
+] as const;
+
 export default function SearchPage() {
   return (
     <main id="main-content" className="mx-auto flex-1 w-full max-w-6xl px-4 py-12 sm:px-6">
-      <h1 className="text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">
+      <JsonLd data={breadcrumbJsonLd([...breadcrumbs])} />
+      <PageBreadcrumbs items={[{ label: "Home", href: "/" }, { label: "Homes for sale" }]} />
+      <h1 className="mt-4 text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">
         Homes for sale near Lone Mountain
       </h1>
       <p className="mt-3 max-w-3xl text-stone-600">
