@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { LifeNearSection } from "@/components/sections/life-near-section";
 import { PageBreadcrumbs } from "@/components/sections/page-breadcrumbs";
 import { RealScoutOfficeListings } from "@/components/realscout/office-listings";
 import { JsonLd } from "@/components/seo/json-ld";
@@ -34,6 +35,15 @@ export default function SearchPage() {
       </p>
       <div className="mt-8 min-h-[480px] rounded-lg border border-stone-200 bg-white p-4 shadow-sm">
         <RealScoutOfficeListings />
+      </div>
+
+      <div className="mt-16">
+        <LifeNearSection
+          defaultFilter="shopping"
+          compact
+          heading="Shop and run errands near your search area"
+          intro="Before you write an offer, map grocery, parks, and schools around Lone Mountain ZIP 89129."
+        />
       </div>
     </main>
   );

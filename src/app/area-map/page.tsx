@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { LifeNearSection } from "@/components/sections/life-near-section";
 import { HyperlocalMapEmbed } from "@/components/sections/hyperlocal-map-embed";
 import { LocalCta } from "@/components/sections/local-cta";
 import { PageBreadcrumbs } from "@/components/sections/page-breadcrumbs";
@@ -52,6 +53,8 @@ export default function AreaMapPage() {
           </Link>
         </div>
       </article>
+
+      <LifeNearSection defaultFilter="parks" compact />
 
       <section className="mx-auto max-w-6xl space-y-12 px-4 py-14 sm:px-6">
         {featured.map((place) => (
