@@ -38,8 +38,8 @@ export default function HomePage() {
             {siteContact.siteName}
           </h1>
           <p className="mt-4 max-w-2xl text-lg text-stone-100">
-            Explore homes and lifestyle near Lone Mountain with {siteContact.businessName},{" "}
-            {siteContact.legalBrokerage}. Call {siteContact.phoneDisplay} for a focused search and
+            Explore homes and lifestyle near Lone Mountain with {siteContact.businessName}, Top 1% Las Vegas
+            REALTOR®. Call {siteContact.phoneDisplay} for a focused search and
             straightforward guidance.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
@@ -184,7 +184,7 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
-          <GoogleMapEmbed title="Map of Berkshire Hathaway HomeServices Nevada Properties office on W Lake Mead Blvd" />
+          <GoogleMapEmbed title="Map of the office on W Lake Mead Blvd" />
         </div>
       </section>
 

@@ -46,7 +46,7 @@ export const loneMountainZipCodes = [
     label: "Office & Centennial Hills access",
     primary: false,
     href: "/contact",
-    description: "Office ZIP for Dr. Jan Duffy’s Berkshire Hathaway Nevada Properties location.",
+    description: "Office ZIP for Dr. Jan Duffy’s office location.",
   },
 ] as const;
 

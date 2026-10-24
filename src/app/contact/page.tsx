@@ -8,7 +8,7 @@ import { siteContact } from "@/lib/site-contact";
 
 export const metadata: Metadata = {
   title: `Contact ${siteContact.businessName} | Lone Mountain & Las Vegas`,
-  description: `Call ${siteContact.phoneDisplay}, email ${siteContact.email}, or visit ${siteContact.legalBrokerage} on W Lake Mead Blvd. Lone Mountain ZIP 89129, Skye Canyon, and northwest Las Vegas real estate.`,
+  description: `Call ${siteContact.phoneDisplay}, email ${siteContact.email}, or visit the office on W Lake Mead Blvd. Lone Mountain ZIP 89129, Skye Canyon, and northwest Las Vegas real estate.`,
   alternates: { canonical: "/contact" },
   robots: { index: true, follow: true },
 };
@@ -59,14 +59,12 @@ export default function ContactPage() {
           <div className="rounded-lg border border-stone-200 bg-white p-6 shadow-sm">
             <h2 className="text-lg font-semibold text-stone-900">Office</h2>
             <p className="mt-2 text-stone-700">
-              {siteContact.legalBrokerage}
-              <br />
               {siteContact.streetAddress}
               <br />
               {siteContact.addressLocality}, {siteContact.addressRegion} {siteContact.postalCode}
             </p>
             <p className="mt-3 text-sm text-stone-600">
-              License {siteContact.license} · {siteContact.businessName}
+              {siteContact.businessName} · Top 1% Las Vegas REALTOR®
             </p>
           </div>
           <div className="rounded-lg border border-stone-200 bg-white p-6 shadow-sm">
@@ -101,7 +99,7 @@ export default function ContactPage() {
             </Link>
           </div>
         </div>
-        <GoogleMapEmbed title="Office location map for Berkshire Hathaway HomeServices Nevada Properties" />
+        <GoogleMapEmbed title="Office location map" />
       </div>
     </main>
   );

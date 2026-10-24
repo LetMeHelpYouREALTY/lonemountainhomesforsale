@@ -90,7 +90,7 @@ export default function LoneMountainNeighborhoodPage() {
           <div className="mt-12 rounded-lg border border-stone-200 bg-stone-50 p-6">
             <p className="font-medium text-stone-900">Work with {siteContact.businessName}</p>
             <p className="mt-2 text-sm text-stone-700">
-              {siteContact.legalBrokerage} · Nevada license {siteContact.license}
+              In real estate since 1983 · Lone Mountain & ZIP 89129 focus
             </p>
             <div className="mt-4 flex flex-wrap gap-3">
               <Link

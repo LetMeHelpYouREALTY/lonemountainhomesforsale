@@ -35,7 +35,7 @@ export const realtorServices: RealtorService[] = [
       "Pricing against recent 89129 closed sales and active competition",
       "Photography-forward marketing with area context buyers expect",
       "Open-house promotion on the site’s Lone Mountain map",
-      "Negotiation support aligned with Berkshire Hathaway HomeServices standards",
+      "Negotiation support aligned with professional standards",
     ],
   },
   {

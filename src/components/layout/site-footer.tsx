@@ -9,10 +9,7 @@ export function SiteFooter() {
           <div>
             <p className="text-base font-semibold text-stone-900">{siteContact.siteName}</p>
             <p className="mt-2 text-sm text-stone-600">{siteContact.primaryArea}</p>
-            <p className="mt-4 text-sm text-stone-700">
-              {siteContact.businessName}, {siteContact.legalBrokerage}
-            </p>
-            <p className="text-sm text-stone-600">License {siteContact.license}</p>
+            <p className="mt-4 text-sm text-stone-700">{siteContact.businessName}</p>
             <nav className="mt-4 text-sm" aria-label="Explore Lone Mountain">
               <p className="font-medium text-stone-900">Explore</p>
               <ul className="mt-2 space-y-2">
@@ -122,6 +119,9 @@ export function SiteFooter() {
           <Link href="/privacy" className="underline underline-offset-2 hover:text-stone-700">
             Privacy Policy
           </Link>
+        </p>
+        <p className="mt-2 text-xs text-stone-500">
+          Berkshire Hathaway HomeServices Nevada Properties since September 2008 · License S.0197614.LLC
         </p>
       </div>
     </footer>

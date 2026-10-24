@@ -8,7 +8,7 @@ type LocalCtaProps = {
 
 export function LocalCta({
   heading = `Work with ${siteContact.businessName}`,
-  body = `${siteContact.legalBrokerage} · Nevada license ${siteContact.license} · hyperlocal focus on Lone Mountain & ZIP 89129`,
+  body = `In real estate since 1983 · hyperlocal focus on Lone Mountain & ZIP 89129`,
 }: LocalCtaProps) {
   return (
     <div className="rounded-xl border border-amber-200 bg-amber-50/80 p-6 sm:p-8">
