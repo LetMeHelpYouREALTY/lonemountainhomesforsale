@@ -94,7 +94,7 @@ export default function HomePage() {
           Why buyers watch Lone Mountain
         </h2>
         <p className="mt-3 max-w-3xl text-stone-700">
-          Lone Mountain offers a northwest Las Vegas address with open views, established neighborhoods,
+          Lone Mountain offers a northwest Las Vegas address with open views, older neighborhoods,
           and practical access to the 215 beltway, Centennial Hills, and Skye Canyon corridors. It is a
           strong fit for buyers who want space, newer construction pockets, and a calmer residential
           rhythm while staying inside the valley. For block-by-block context inside{" "}
