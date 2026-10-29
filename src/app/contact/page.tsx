@@ -64,7 +64,7 @@ export default function ContactPage() {
               {siteContact.addressLocality}, {siteContact.addressRegion} {siteContact.postalCode}
             </p>
             <p className="mt-3 text-sm text-stone-600">
-              {siteContact.businessName} · Top 1% Las Vegas REALTOR®
+              {siteContact.businessName} · Las Vegas REALTOR®
             </p>
           </div>
           <div className="rounded-lg border border-stone-200 bg-white p-6 shadow-sm">

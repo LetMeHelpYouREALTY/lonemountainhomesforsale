@@ -38,7 +38,7 @@ export default function HomePage() {
             {siteContact.siteName}
           </h1>
           <p className="mt-4 max-w-2xl text-lg text-stone-100">
-            Explore homes and lifestyle near Lone Mountain with {siteContact.businessName}, Top 1% Las Vegas
+            Explore homes and lifestyle near Lone Mountain with {siteContact.businessName}, Las Vegas
             REALTOR®. Call {siteContact.phoneDisplay} for a focused search and
             straightforward guidance.
           </p>
