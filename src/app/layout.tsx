@@ -6,6 +6,8 @@ import { SiteHeader } from "@/components/layout/site-header";
 import { JsonLd } from "@/components/seo/json-ld";
 import { rootMetadata } from "@/lib/metadata";
 import { realEstateAgentJsonLd, websiteJsonLd } from "@/lib/schema";
+import { Analytics as VercelAnalytics } from "@vercel/analytics/next";
+import { SpeedInsights as VercelSpeedInsights } from "@vercel/speed-insights/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,6 +40,8 @@ export default function RootLayout({
         <SiteHeader />
         <div className="flex flex-1 flex-col">{children}</div>
         <SiteFooter />
+        <VercelAnalytics />
+        <VercelSpeedInsights />
       </body>
     </html>
   );
