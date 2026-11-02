@@ -97,6 +97,16 @@ export default function TourPage() {
           targets. You will get a focused tour route instead of scrolling every 89129 listing
           manually.
         </p>
+        <p className="mt-4 text-stone-700">
+          <a
+            href="https://calendly.com/drjanduffy/showing?utm_source=lonemountainhomesforsale.com&utm_medium=website&utm_content=tour-page"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium text-amber-800 underline decoration-amber-700/40 underline-offset-2 hover:text-amber-700"
+          >
+            Book a private showing with Dr. Jan Duffy
+          </a>
+        </p>
         <div className="mt-10 space-y-8">
           {tourFaqs.map((item) => (
             <article key={item.question}>

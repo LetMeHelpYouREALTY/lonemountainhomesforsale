@@ -52,6 +52,15 @@ export default function OpenHousesPage() {
             >
               {siteContact.phoneDisplay}
             </a>{" "}
+            or{" "}
+            <a
+              href="https://calendly.com/drjanduffy/showing?utm_source=lonemountainhomesforsale.com&utm_medium=website&utm_content=open-houses"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-amber-800 underline decoration-amber-700/30 underline-offset-2 hover:text-amber-700"
+            >
+              book a private showing online
+            </a>{" "}
             or email{" "}
             <a
               href={`mailto:${siteContact.email}`}
