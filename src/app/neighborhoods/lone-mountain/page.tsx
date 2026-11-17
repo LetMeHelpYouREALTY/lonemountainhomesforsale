@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { LifeNearSection } from "@/components/sections/life-near-section";
 import { PageBreadcrumbs } from "@/components/sections/page-breadcrumbs";
 import { JsonLd } from "@/components/seo/json-ld";
 import { breadcrumbJsonLd } from "@/lib/schema";
@@ -109,6 +110,13 @@ export default function LoneMountainNeighborhoodPage() {
           </div>
         </div>
       </article>
+
+      <LifeNearSection
+        defaultFilter="grocery"
+        compact
+        heading="What's nearby in 89129"
+        intro="Groceries, parks, and medical access from Lone Mountain pockets—filter the map, then open the full amenities guide for commute FAQs."
+      />
     </main>
   );
 }

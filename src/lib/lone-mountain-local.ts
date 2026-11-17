@@ -76,7 +76,7 @@ export const loneMountainAmenities: LocalPlace[] = [
     slug: "lone-mountain-regional-park",
     category: "park",
     description:
-      "Clark County park with a ~2-mile base loop trail, tennis courts, basketball, and equestrian paths—popular for families and active buyers.",
+      "Clark County park with a ~2-mile base loop trail, tennis courts, basketball, and equestrian paths—popular with residents and active buyers.",
     address: "4445 N Jensen St",
     zip: "89129",
     mapQuery: "Lone Mountain Regional Park Las Vegas NV 89129",
@@ -114,7 +114,7 @@ export const loneMountainAmenities: LocalPlace[] = [
     slug: "craig-ranch-regional-park",
     category: "park",
     description:
-      "Large regional park east along Lone Mountain Road—sports fields, community events, and a common weekend destination for northwest families.",
+      "170-acre regional park east along Lone Mountain Road—sports fields, community events, and a common weekend destination for northwest residents.",
     mapQuery: "Craig Ranch Regional Park North Las Vegas NV",
   },
   {
@@ -168,7 +168,7 @@ export const loneMountainSchools = [
   {
     level: "High",
     name: "Centennial High School",
-    note: "Large northwest high school; athletics and programs draw families to the corridor.",
+    note: "CCSD high school in the northwest valley—confirm assignment per address with the CCSD Zoning Search.",
   },
 ] as const;
 

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { GoogleMapEmbed } from "@/components/sections/google-map-embed";
+import { LifeNearSection } from "@/components/sections/life-near-section";
 import { OpenHousesMapBlock } from "@/components/sections/open-houses-map-block";
 import { JsonLd } from "@/components/seo/json-ld";
 import { homeFaqs } from "@/lib/home-faqs";
@@ -88,6 +89,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <LifeNearSection defaultFilter="parks" compact />
 
       <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
         <h2 className="text-2xl font-semibold tracking-tight text-stone-900">

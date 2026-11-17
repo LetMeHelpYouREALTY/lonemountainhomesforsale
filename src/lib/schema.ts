@@ -1,3 +1,5 @@
+import type { CuratedNearbyPlace } from "@/lib/curated-nearby-places";
+import { loneMountainPeakGeo } from "@/lib/lone-mountain-local";
 import { siteContact } from "@/lib/site-contact";
 
 const agentId = `${siteContact.siteUrl}/#agent`;
@@ -68,6 +70,15 @@ export function realEstateAgentJsonLd(): Record<string, unknown> {
     },
     areaServed: [
       { "@type": "Place", name: siteContact.primaryArea },
+      {
+        "@type": "Place",
+        name: "Lone Mountain, Las Vegas, NV 89129",
+        geo: {
+          "@type": "GeoCoordinates",
+          latitude: loneMountainPeakGeo.latitude,
+          longitude: loneMountainPeakGeo.longitude,
+        },
+      },
       { "@type": "City", name: "Las Vegas" },
     ],
     worksFor: {
@@ -181,6 +192,55 @@ export function serviceCatalogJsonLd(services: ServiceOffer[]): Record<string, u
 }
 
 type ItemListEntry = { name: string; description: string; url?: string };
+
+/** ItemList of verified nearby places with schema.org Place subtypes */
+export function verifiedNearbyPlacesItemListJsonLd(
+  places: CuratedNearbyPlace[],
+): Record<string, unknown> {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Featured amenities near Lone Mountain, Las Vegas",
+    itemListElement: places.map((place, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      item: {
+        "@type": place.schemaType,
+        name: place.name,
+        url: place.sourceUrl,
+        ...(place.address
+          ? {
+              address: {
+                "@type": "PostalAddress",
+                streetAddress: place.address,
+                addressLocality: place.locality,
+                addressRegion: place.region,
+                ...(place.postalCode ? { postalCode: place.postalCode } : {}),
+                addressCountry: "US",
+              },
+            }
+          : {
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: place.locality,
+                addressRegion: place.region,
+                ...(place.postalCode ? { postalCode: place.postalCode } : {}),
+                addressCountry: "US",
+              },
+            }),
+        ...(place.geo
+          ? {
+              geo: {
+                "@type": "GeoCoordinates",
+                latitude: place.geo.latitude,
+                longitude: place.geo.longitude,
+              },
+            }
+          : {}),
+      },
+    })),
+  };
+}
 
 export function itemListJsonLd(name: string, items: ItemListEntry[]): Record<string, unknown> {
   const base = siteContact.siteUrl.replace(/\/$/, "");
