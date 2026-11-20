@@ -7,7 +7,9 @@ export function JsonLd({ data }: JsonLdProps) {
     <script
       type="application/ld+json"
       // JSON-L-LD must be a string; content is server-generated from static data.
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify(data).replace(/</g, "\\u003c"),
+      }}
     />
   );
 }

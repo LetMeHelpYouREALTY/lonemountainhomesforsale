@@ -6,7 +6,8 @@
  * primaryArea uses ZIP 89129 (Lone Mountain market); postalCode is the office ZIP 89134 (GBP pin).
  */
 export const siteContact = {
-  siteName: "Lone Mountain Homes",
+  siteName: "Lone Mountain Heights",
+  siteTagline: "Homes for Sale",
   businessName: "Dr. Jan Duffy",
   legalBrokerage: "Berkshire Hathaway HomeServices Nevada Properties",
   license: "S.0197614.LLC",

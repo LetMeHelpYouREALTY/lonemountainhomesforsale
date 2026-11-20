@@ -2,23 +2,28 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { GoogleMapEmbed } from "@/components/sections/google-map-embed";
+import { HeroListingsBand } from "@/components/sections/hero-listings-band";
 import { OpenHousesMapBlock } from "@/components/sections/open-houses-map-block";
 import { JsonLd } from "@/components/seo/json-ld";
+import { brandAssets } from "@/lib/brand-assets";
+import { calendlyUrl } from "@/lib/calendly";
 import { homeFaqs } from "@/lib/home-faqs";
 import { galleryImagePaths } from "@/lib/gallery-images";
-import { faqPageJsonLd } from "@/lib/schema";
+import { faqPageJsonLd, loneMountainPlaceJsonLd } from "@/lib/schema";
 import { siteContact } from "@/lib/site-contact";
 
 export const metadata: Metadata = {
+  title: `${siteContact.siteName} | Lone Mountain Las Vegas 89129`,
   alternates: { canonical: "/" },
 };
 
 export default function HomePage() {
   const hero = galleryImagePaths[0];
+  const showingCalendly = calendlyUrl("showing", "home-hero");
 
   return (
     <main id="main-content" className="flex-1">
-      <JsonLd data={faqPageJsonLd([...homeFaqs])} />
+      <JsonLd data={[faqPageJsonLd([...homeFaqs]), loneMountainPlaceJsonLd()]} />
 
       <section className="relative isolate min-h-[min(70vh,560px)] w-full">
         <Image
@@ -29,35 +34,63 @@ export default function HomePage() {
           className="object-cover"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-stone-900/40 to-stone-900/20" />
-        <div className="relative mx-auto flex max-w-6xl flex-col justify-end px-4 pb-16 pt-28 sm:px-6 sm:pb-20 sm:pt-36">
-          <p className="text-sm font-medium uppercase tracking-wide text-amber-200/90">
-            Las Vegas, NV · Lone Mountain · 89129
-          </p>
-          <h1 className="mt-3 max-w-3xl text-4xl font-bold tracking-tight text-white sm:text-5xl">
-            {siteContact.siteName}
-          </h1>
-          <p className="mt-4 max-w-2xl text-lg text-stone-100">
-            Explore homes and lifestyle near Lone Mountain with {siteContact.businessName}, Las Vegas
-            REALTOR®. Call {siteContact.phoneDisplay} for a focused search and
-            straightforward guidance.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link
-              href="/search"
-              className="inline-flex items-center justify-center rounded-md bg-amber-600 px-5 py-3 text-sm font-semibold text-white shadow hover:bg-amber-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300"
-            >
-              Browse homes for sale
-            </Link>
-            <a
-              href={`tel:${siteContact.phoneE164}`}
-              className="inline-flex items-center justify-center rounded-md border border-white/40 bg-white/10 px-5 py-3 text-sm font-semibold text-white backdrop-blur hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300"
-            >
-              Call {siteContact.phoneDisplay}
-            </a>
+        <div className="absolute inset-0 bg-gradient-to-t from-stone-950/85 via-stone-900/45 to-stone-900/25" />
+        <div className="relative mx-auto grid max-w-6xl gap-8 px-4 pb-16 pt-28 sm:px-6 sm:pb-20 sm:pt-36 lg:grid-cols-[minmax(0,1fr)_200px] lg:items-end">
+          <div>
+            <p className="text-sm font-medium uppercase tracking-wide text-amber-200/90">
+              Las Vegas, NV · Lone Mountain · 89129
+            </p>
+            <h1 className="mt-3 max-w-3xl text-4xl font-bold tracking-tight text-white sm:text-5xl">
+              {siteContact.siteName}
+            </h1>
+            <p className="mt-1 text-lg font-medium text-amber-100/95">{siteContact.siteTagline}</p>
+            <p className="mt-4 max-w-2xl text-lg text-stone-100">
+              Elevated northwest Las Vegas search—open houses, MLS inventory, and private tours with{" "}
+              {siteContact.businessName}, Las Vegas REALTOR®. Call {siteContact.phoneDisplay}.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link
+                href="/search"
+                className="inline-flex items-center justify-center rounded-md bg-amber-600 px-5 py-3 text-sm font-semibold text-white shadow hover:bg-amber-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300"
+              >
+                Browse homes for sale
+              </Link>
+              <a
+                href={showingCalendly}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center rounded-md border border-white/40 bg-white/10 px-5 py-3 text-sm font-semibold text-white backdrop-blur hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300"
+              >
+                Book a showing
+                <span className="sr-only"> (opens Calendly in a new tab)</span>
+              </a>
+              <a
+                href={`tel:${siteContact.phoneE164}`}
+                className="inline-flex items-center justify-center rounded-md border border-white/40 bg-white/10 px-5 py-3 text-sm font-semibold text-white backdrop-blur hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300"
+              >
+                Call {siteContact.phoneDisplay}
+              </a>
+            </div>
           </div>
+          <figure className="hidden lg:block">
+            <div className="overflow-hidden rounded-2xl border-2 border-white/30 bg-white/10 p-1 shadow-2xl backdrop-blur-sm">
+              <Image
+                src={brandAssets.agentPortrait}
+                alt={brandAssets.agentPortraitAlt}
+                width={180}
+                height={180}
+                className="h-[180px] w-[180px] rounded-xl object-cover"
+                priority
+              />
+            </div>
+            <figcaption className="mt-2 text-center text-xs text-stone-200">
+              {siteContact.businessName} · {siteContact.legalBrokerage}
+            </figcaption>
+          </figure>
         </div>
       </section>
+
+      <HeroListingsBand />
 
       <section className="border-b border-stone-200 bg-stone-50 py-12 sm:py-14">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
@@ -94,7 +127,7 @@ export default function HomePage() {
           Why buyers watch Lone Mountain
         </h2>
         <p className="mt-3 max-w-3xl text-stone-700">
-          Lone Mountain offers a northwest Las Vegas address with open views, older neighborhoods,
+          Lone Mountain offers a northwest Las Vegas address with open views, established neighborhoods,
           and practical access to the 215 beltway, Centennial Hills, and Skye Canyon corridors. It is a
           strong fit for buyers who want space, newer construction pockets, and a calmer residential
           rhythm while staying inside the valley. For block-by-block context inside{" "}

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CalendlyScheduleCard } from "@/components/sections/calendly-schedule-card";
 import { GoogleMapEmbed } from "@/components/sections/google-map-embed";
 import { PageBreadcrumbs } from "@/components/sections/page-breadcrumbs";
 import { JsonLd } from "@/components/seo/json-ld";
@@ -7,8 +8,8 @@ import { breadcrumbJsonLd } from "@/lib/schema";
 import { siteContact } from "@/lib/site-contact";
 
 export const metadata: Metadata = {
-  title: `Contact ${siteContact.businessName} | Lone Mountain & Las Vegas`,
-  description: `Call ${siteContact.phoneDisplay}, email ${siteContact.email}, or visit the office on W Lake Mead Blvd. Lone Mountain ZIP 89129, Skye Canyon, and northwest Las Vegas real estate.`,
+  title: `Contact ${siteContact.businessName} | Lone Mountain Heights 89129`,
+  description: `Schedule a Lone Mountain showing on Calendly, call ${siteContact.phoneDisplay}, or email ${siteContact.email}. Office on W Lake Mead Blvd, Las Vegas NV.`,
   alternates: { canonical: "/contact" },
   robots: { index: true, follow: true },
 };
@@ -27,12 +28,17 @@ export default function ContactPage() {
         Contact {siteContact.businessName}
       </h1>
       <p className="mt-3 max-w-2xl text-lg text-stone-600">
-        Questions about Lone Mountain, 89129, or northwest Las Vegas real estate? Reach out by phone,
-        email, or schedule time at the office.
+        Questions about Lone Mountain Heights, ZIP 89129, or northwest Las Vegas? Book time online, call,
+        or email—whichever fits your day.
       </p>
 
       <div className="mt-10 grid gap-10 lg:grid-cols-2">
         <div className="space-y-6">
+          <CalendlyScheduleCard
+            placement="contact-page"
+            title="Book a Lone Mountain showing"
+            body="This is the fastest way to request a tour or buyer consult. Calendly opens in a new tab (no embed on this site)."
+          />
           <div className="rounded-lg border border-stone-200 bg-white p-6 shadow-sm">
             <h2 className="text-lg font-semibold text-stone-900">Phone</h2>
             <p className="mt-2">

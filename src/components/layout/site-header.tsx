@@ -1,7 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { brandAssets } from "@/lib/brand-assets";
 import { siteContact } from "@/lib/site-contact";
 import { cn } from "@/lib/utils";
 
@@ -23,9 +25,18 @@ export function SiteHeader() {
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
         <Link
           href="/"
-          className="text-lg font-semibold tracking-tight text-stone-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700"
+          className="flex items-center gap-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700"
         >
-          {siteContact.siteName}
+          <Image
+            src={brandAssets.agentPortrait}
+            alt=""
+            width={40}
+            height={40}
+            className="h-10 w-10 rounded-full border border-amber-200 object-cover"
+          />
+          <span className="text-lg font-semibold tracking-tight text-stone-900">
+            {siteContact.siteName}
+          </span>
         </Link>
         <button
           type="button"

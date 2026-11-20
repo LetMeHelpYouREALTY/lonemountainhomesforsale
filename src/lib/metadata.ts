@@ -17,7 +17,7 @@ export function rootMetadata(): Metadata {
       default: `${siteContact.siteName} | Lone Mountain Las Vegas 89129`,
       template: `%s | ${siteContact.siteName}`,
     },
-    description: `Lone Mountain & 89129 homes for sale, open houses, and northwest Las Vegas buyer guidance with ${siteContact.businessName}. Call ${siteContact.phoneDisplay}.`,
+    description: `Lone Mountain Heights: 89129 homes for sale, weekend open houses, and northwest Las Vegas tours with ${siteContact.businessName}. Call ${siteContact.phoneDisplay}.`,
     ...(googleSiteVerification
       ? { verification: { google: googleSiteVerification } }
       : {}),
@@ -27,7 +27,7 @@ export function rootMetadata(): Metadata {
       url: siteContact.siteUrl,
       siteName: siteContact.siteName,
       title: `${siteContact.siteName} | Lone Mountain Las Vegas 89129`,
-      description: `Hyperlocal focus on Lone Mountain, the 215 beltway, and Skye Canyon / Centennial Hills access—search homes and open houses in northwest Las Vegas with ${siteContact.businessName}.`,
+      description: `Lone Mountain Heights covers ZIP 89129, the Lone Mountain butte, Skye Canyon, and Centennial Hills access—MLS search and open-house maps with ${siteContact.businessName}.`,
       images: [
         {
           url: ogImageUrl,

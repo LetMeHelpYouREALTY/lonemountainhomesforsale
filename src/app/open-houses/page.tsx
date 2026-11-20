@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { HeroListingsBand } from "@/components/sections/hero-listings-band";
 import { OpenHousesMapBlock } from "@/components/sections/open-houses-map-block";
+import { calendlyUrl } from "@/lib/calendly";
 import { PageBreadcrumbs } from "@/components/sections/page-breadcrumbs";
 import { JsonLd } from "@/components/seo/json-ld";
 import { breadcrumbJsonLd } from "@/lib/schema";
@@ -54,7 +56,7 @@ export default function OpenHousesPage() {
             </a>{" "}
             or{" "}
             <a
-              href="https://calendly.com/drjanduffy/showing?utm_source=lonemountainhomesforsale.com&utm_medium=website&utm_content=open-houses"
+              href={calendlyUrl("showing", "open-houses")}
               target="_blank"
               rel="noopener noreferrer"
               className="font-medium text-amber-800 underline decoration-amber-700/30 underline-offset-2 hover:text-amber-700"
@@ -97,6 +99,11 @@ export default function OpenHousesPage() {
           </p>
         </div>
       </section>
+
+      <HeroListingsBand
+        heading="Active listings near this weekend’s map"
+        intro="Pair open-house pins with live MLS status—inventory changes daily in 89129."
+      />
     </main>
   );
 }

@@ -1,3 +1,4 @@
+import { brandAssets } from "@/lib/brand-assets";
 import { siteContact } from "@/lib/site-contact";
 
 const agentId = `${siteContact.siteUrl}/#agent`;
@@ -14,7 +15,7 @@ export function websiteJsonLd(): Record<string, unknown> {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "@id": `${base}/#website`,
-    name: `${siteContact.siteName} | Lone Mountain Las Vegas 89129`,
+    name: `${siteContact.siteName} ${siteContact.siteTagline} | 89129 Las Vegas`,
     url: base,
     description:
       "Homes for sale, open houses, and neighborhood context focused on Lone Mountain and ZIP 89129 in northwest Las Vegas.",
@@ -52,7 +53,7 @@ export function realEstateAgentJsonLd(): Record<string, unknown> {
     url: siteContact.siteUrl,
     telephone: siteContact.phoneE164,
     email: siteContact.email,
-    image: `${base}${defaultOgImagePath}`,
+    image: `${base}${brandAssets.agentPortrait}`,
     address: {
       "@type": "PostalAddress",
       streetAddress: siteContact.streetAddress,

@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
+import { RealScoutScript } from "@/components/realscout/realscout-script";
 import { JsonLd } from "@/components/seo/json-ld";
 import { rootMetadata } from "@/lib/metadata";
 import { realEstateAgentJsonLd, websiteJsonLd } from "@/lib/schema";
@@ -35,6 +36,7 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
+        <RealScoutScript />
         <SiteHeader />
         <div className="flex flex-1 flex-col">{children}</div>
         <SiteFooter />

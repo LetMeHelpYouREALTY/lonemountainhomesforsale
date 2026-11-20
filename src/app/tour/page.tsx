@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { HeroListingsBand } from "@/components/sections/hero-listings-band";
 import { LocalCta } from "@/components/sections/local-cta";
 import { OpenHousesMapBlock } from "@/components/sections/open-houses-map-block";
+import { calendlyUrl } from "@/lib/calendly";
 import { PageBreadcrumbs } from "@/components/sections/page-breadcrumbs";
 import { JsonLd } from "@/components/seo/json-ld";
 import { breadcrumbJsonLd, faqPageJsonLd } from "@/lib/schema";
 import { siteContact } from "@/lib/site-contact";
 
 export const metadata: Metadata = {
-  title: "Tour Lone Mountain Homes | Open Houses & Private Showings 89129",
+  title: "Tour Lone Mountain Heights Homes | Open Houses & Private Showings 89129",
   description: `Schedule a Lone Mountain Las Vegas home tour or open house visit in ZIP 89129 with ${siteContact.businessName}. Call ${siteContact.phoneDisplay}.`,
   alternates: { canonical: "/tour" },
   robots: { index: true, follow: true },
@@ -71,6 +73,11 @@ export default function TourPage() {
         </div>
       </article>
 
+      <HeroListingsBand
+        heading="Homes to tour near Lone Mountain"
+        intro="Shortlist addresses before your open-house loop or private showing—then confirm access times with Dr. Jan Duffy."
+      />
+
       <section className="border-b border-stone-200 bg-stone-50 py-12 sm:py-14">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <h2 className="text-2xl font-semibold text-stone-900">This weekend&apos;s open houses</h2>
@@ -99,7 +106,7 @@ export default function TourPage() {
         </p>
         <p className="mt-4 text-stone-700">
           <a
-            href="https://calendly.com/drjanduffy/showing?utm_source=lonemountainhomesforsale.com&utm_medium=website&utm_content=tour-page"
+            href={calendlyUrl("showing", "tour-page")}
             target="_blank"
             rel="noopener noreferrer"
             className="font-medium text-amber-800 underline decoration-amber-700/40 underline-offset-2 hover:text-amber-700"
