@@ -1,3 +1,4 @@
+import { agentSameAs } from "@/lib/agent-profiles";
 import { brandAssets } from "@/lib/brand-assets";
 import { siteContact } from "@/lib/site-contact";
 
@@ -74,18 +75,55 @@ export function realEstateAgentJsonLd(): Record<string, unknown> {
     worksFor: {
       "@type": "Organization",
       name: siteContact.legalBrokerage,
+      url: "https://www.bhhsnv.com/",
     },
     identifier: {
       "@type": "PropertyValue",
       name: "Nevada real estate license",
       value: siteContact.license,
     },
+    sameAs: [...agentSameAs],
+    knowsAbout: [
+      "Lone Mountain Las Vegas real estate",
+      "ZIP 89129 homes for sale",
+      "Northwest Las Vegas open houses",
+      "Skye Canyon and Centennial Hills comparisons",
+    ],
     openingHoursSpecification: siteContact.openingHours.map((h) => ({
       "@type": "OpeningHoursSpecification",
       dayOfWeek: h.dayOfWeek,
       opens: h.opens,
       closes: h.closes,
     })),
+  };
+}
+
+type ArticleOpts = {
+  headline: string;
+  description: string;
+  path: string;
+  dateModified: string;
+  datePublished?: string;
+};
+
+/** Dated Article for market updates and cite-ready guides (AEO/GEO). */
+export function articleJsonLd(opts: ArticleOpts): Record<string, unknown> {
+  const base = siteContact.siteUrl.replace(/\/$/, "");
+  const url = `${base}${opts.path}`;
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "@id": `${url}#article`,
+    headline: opts.headline,
+    description: opts.description,
+    url,
+    dateModified: opts.dateModified,
+    datePublished: opts.datePublished ?? opts.dateModified,
+    inLanguage: "en-US",
+    author: { "@id": agentId },
+    publisher: { "@id": agentId },
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    about: { "@id": `${base}/#lone-mountain-place` },
   };
 }
 

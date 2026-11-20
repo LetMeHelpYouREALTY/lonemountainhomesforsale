@@ -9,9 +9,10 @@ export type SitemapRoute = {
 
 export const sitemapRoutes: SitemapRoute[] = [
   { path: "", changeFrequency: "weekly", priority: 1 },
+  { path: "/market-update", changeFrequency: "weekly", priority: 0.9 },
   { path: "/open-houses", changeFrequency: "weekly", priority: 0.78 },
   { path: "/zip-codes/89129", changeFrequency: "weekly", priority: 0.8 },
-  { path: "/neighborhoods/lone-mountain", changeFrequency: "monthly", priority: 0.75 },
+  { path: "/neighborhoods/lone-mountain", changeFrequency: "weekly", priority: 0.82 },
   { path: "/amenities", changeFrequency: "monthly", priority: 0.78 },
   { path: "/area-map", changeFrequency: "monthly", priority: 0.72 },
   { path: "/schools/lone-mountain", changeFrequency: "monthly", priority: 0.68 },

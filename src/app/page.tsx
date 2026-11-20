@@ -159,6 +159,26 @@ export default function HomePage() {
 
       <section className="border-y border-stone-200 bg-white py-12 sm:py-14">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <h2 className="text-2xl font-semibold tracking-tight text-stone-900">
+            What is the Lone Mountain market doing right now?
+          </h2>
+          <p className="mt-3 max-w-3xl text-stone-700">
+            As of November 20, 2026, Redfin’s Lone Mountain neighborhood series shows a{" "}
+            <strong>$421,298</strong> median sale price for the three months ending October 2026.
+            ZIP 89129 median list sat near <strong>$550,000</strong> mid-November on an IDX report.
+            Read the sourced snapshot, then tour what is actually listed this week.
+          </p>
+          <Link
+            href="/market-update"
+            className="mt-6 inline-flex items-center justify-center rounded-md bg-amber-700 px-5 py-3 text-sm font-semibold text-white shadow hover:bg-amber-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700"
+          >
+            View market update
+          </Link>
+        </div>
+      </section>
+
+      <section className="border-b border-stone-200 bg-stone-50 py-12 sm:py-14">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <h2 className="text-2xl font-semibold tracking-tight text-stone-900">Area photography</h2>
           <p className="mt-3 max-w-3xl text-stone-700">
             See a full gallery of Lone Mountain and northwest Las Vegas scenery and neighborhood

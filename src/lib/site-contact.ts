@@ -37,6 +37,8 @@ export const siteContact = {
   /** Use your GBP “review” link when available; maps place search opens the knowledge panel. */
   googleReviewsUrl:
     "https://www.google.com/maps/search/?api=1&query=Berkshire+Hathaway+HomeServices+Nevada+Properties+9406+W+Lake+Mead+Blvd+Las+Vegas+NV+89134",
+  /** Official brokerage bio — also used in schema sameAs */
+  brokerageBioUrl: "https://www.bhhsnv.com/bio/drjanduffy",
   /**
    * Google My Maps embed iframe `src` (defaults below).
    * To update: Google My Maps → Share → Embed → copy the `src` URL, then either paste into

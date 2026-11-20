@@ -23,6 +23,14 @@ export function SiteFooter() {
                 </li>
                 <li>
                   <Link
+                    href="/market-update"
+                    className="text-amber-900 underline-offset-2 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700"
+                  >
+                    Market update (prices &amp; inventory)
+                  </Link>
+                </li>
+                <li>
+                  <Link
                     href="/amenities"
                     className="text-amber-900 underline-offset-2 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-700"
                   >

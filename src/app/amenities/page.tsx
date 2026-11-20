@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ComparisonTable } from "@/components/sections/comparison-table";
 import { AmenityGrid } from "@/components/sections/hyperlocal-grids";
 import { HyperlocalMapEmbed } from "@/components/sections/hyperlocal-map-embed";
 import { LocalCta } from "@/components/sections/local-cta";
@@ -11,7 +12,9 @@ import {
   loneMountainSchools,
   loneMountainZipCodes,
 } from "@/lib/lone-mountain-local";
+import { marketUpdateMeta, pocketComparison } from "@/lib/market-update";
 import {
+  articleJsonLd,
   breadcrumbJsonLd,
   faqPageJsonLd,
   itemListJsonLd,
@@ -57,6 +60,13 @@ export default function AmenitiesPage() {
             { name: "Home", path: "/" },
             { name: "Amenities", path: "/amenities" },
           ]),
+          articleJsonLd({
+            headline: "Lone Mountain amenities, parks & maps — Las Vegas 89129",
+            description:
+              "Parks, trails, shopping, beltway access, and ZIP comparisons around Lone Mountain Las Vegas 89129.",
+            path: "/amenities",
+            dateModified: marketUpdateMeta.asOfIso,
+          }),
           itemListJsonLd(
             "Lone Mountain amenities",
             loneMountainAmenities.map((a) => ({
@@ -77,7 +87,7 @@ export default function AmenitiesPage() {
             ]}
           />
           <p className="mt-4 text-sm font-medium uppercase tracking-wide text-amber-800">
-            Hyperlocal · ZIP 89129 · Northwest Las Vegas
+            Hyperlocal · ZIP 89129 · Updated {marketUpdateMeta.asOfLabel}
           </p>
           <h1 className="mt-2 text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl">
             Lone Mountain amenities, parks &amp; daily life
@@ -106,11 +116,14 @@ export default function AmenitiesPage() {
       </article>
 
       <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
-        <h2 className="text-2xl font-semibold text-stone-900">Parks, trails &amp; the Lone Mountain peak</h2>
+        <h2 className="text-2xl font-semibold text-stone-900">
+          What parks are near Lone Mountain Las Vegas?
+        </h2>
         <p className="mt-3 max-w-3xl text-stone-700">
-          The namesake butte rises about 560 feet above the northwest valley with a multi-mile
-          perimeter trail for hiking, jogging, and horseback riding—views stretch toward the Spring
-          Mountains and the wider Las Vegas basin.
+          Lone Mountain Regional Park, Lone Mountain Discovery Park, Mountain Crest Park, and Craig
+          Ranch Regional Park are the recreation anchors most 89129 buyers ask about. The namesake
+          butte rises about 560 feet above the northwest valley with a multi-mile perimeter trail—
+          views stretch toward the Spring Mountains and the wider Las Vegas basin.
         </p>
         <div className="mt-8">
           <AmenityGrid amenities={parks} showMaps />
@@ -131,11 +144,17 @@ export default function AmenitiesPage() {
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
-        <h2 className="text-2xl font-semibold text-stone-900">Nearby communities buyers compare</h2>
+        <h2 className="text-2xl font-semibold text-stone-900">
+          How do Lone Mountain, Skye Canyon, and Centennial Hills compare?
+        </h2>
         <p className="mt-3 max-w-3xl text-stone-700">
           Lone Mountain sits between established northwest pockets and newer master-planned growth—
           {siteContact.businessName} helps you weigh Skye Canyon new build vs. mature 89129 lots.
         </p>
+        <ComparisonTable
+          caption="Northwest Las Vegas pocket comparison"
+          rows={pocketComparison}
+        />
         <div className="mt-8">
           <AmenityGrid amenities={communities} />
         </div>
@@ -143,11 +162,19 @@ export default function AmenitiesPage() {
 
       <section className="border-t border-stone-200 bg-white py-14">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <h2 className="text-2xl font-semibold text-stone-900">Commute corridors</h2>
+          <h2 className="text-2xl font-semibold text-stone-900">
+            How do I access the 215 beltway from Lone Mountain?
+          </h2>
+          <p className="mt-3 max-w-3xl text-stone-700">
+            CC-215 Exit 32 at Lone Mountain Road provides direct beltway access near Lone Mountain
+            Regional Park, linking northwest Las Vegas to Centennial Hills, Skye Canyon, and the
+            Centennial Bowl interchange with I-11/US-95.
+          </p>
+          <h3 className="mt-8 text-lg font-semibold text-stone-900">Commute corridors</h3>
           <ul className="mt-6 grid gap-4 sm:grid-cols-2">
             {commuteCorridors.map((c) => (
               <li key={c.name} className="rounded-lg border border-stone-200 bg-stone-50 p-5">
-                <h3 className="font-semibold text-stone-900">{c.name}</h3>
+                <p className="font-semibold text-stone-900">{c.name}</p>
                 <p className="mt-2 text-sm text-stone-700">{c.detail}</p>
               </li>
             ))}
