@@ -11,6 +11,8 @@ export type LegacyRedirect = {
 export const legacyExactRedirects: LegacyRedirect[] = [
   { source: "/visit-api", destination: "/" },
   { source: "/lc", destination: "/contact" },
+  /** Short nav/bookmark alias for market update */
+  { source: "/market", destination: "/market-update" },
   /** Prior site share/messaging UI (GSC: excluded by noindex on 404) */
   { source: "/message/share", destination: "/contact" },
 ];

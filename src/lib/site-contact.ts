@@ -66,8 +66,36 @@ export function getOpenHousesMapViewerUrl(): string {
   return fromEnv || siteContact.openHousesMapViewerUrl;
 }
 
+/** RealScout expects base64 of `Agent-<numericId>` (e.g. Agent-225050 → QWdlbnQtMjI1MDUw). */
+const REALSCOUT_AGENT_ENCODED_FALLBACK = "QWdlbnQtMjI1MDUw";
+
+function toBase64Utf8(value: string): string {
+  if (typeof Buffer !== "undefined") {
+    return Buffer.from(value, "utf8").toString("base64");
+  }
+  return btoa(value);
+}
+
+function resolveRealScoutAgentEncodedId(): string {
+  const raw = process.env.NEXT_PUBLIC_REALSCOUT_AGENT_ID?.trim() ?? "";
+  if (!raw) return REALSCOUT_AGENT_ENCODED_FALLBACK;
+  // Already encoded
+  if (raw === REALSCOUT_AGENT_ENCODED_FALLBACK || raw.startsWith("QWdlbnQ")) {
+    return raw;
+  }
+  // Numeric office/agent id from dashboards → encode as RealScout expects
+  if (/^\d+$/.test(raw)) {
+    return toBase64Utf8(`Agent-${raw}`);
+  }
+  // Accidental "Agent-225050" paste
+  if (/^Agent-\d+$/i.test(raw)) {
+    return toBase64Utf8(raw.replace(/^agent-/i, "Agent-"));
+  }
+  return raw;
+}
+
 export const realScoutDefaults = {
-  /** Override with NEXT_PUBLIC_REALSCOUT_AGENT_ID in production if different */
-  agentEncodedId: process.env.NEXT_PUBLIC_REALSCOUT_AGENT_ID ?? "QWdlbnQtMjI1MDUw",
+  /** Override with NEXT_PUBLIC_REALSCOUT_AGENT_ID (base64 or numeric). Empty → fallback. */
+  agentEncodedId: resolveRealScoutAgentEncodedId(),
   scriptSrc: "https://em.realscout.com/widgets/realscout-web-components.umd.js",
 } as const;

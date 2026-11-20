@@ -22,7 +22,7 @@ export function HeroListingsBand({
         </h2>
         <p className="mt-3 max-w-3xl text-stone-700">{intro}</p>
         <p className="mt-2 text-xs text-stone-500">
-          Listing data is deemed reliable but not guaranteed. © {new Date().getFullYear()} GLVAR. Dr.{" "}
+          Listing data is deemed reliable but not guaranteed. © {new Date().getFullYear()} GLVAR.{" "}
           {siteContact.businessName}, {siteContact.legalBrokerage}, License {siteContact.license}.
         </p>
         <div className="mt-6 min-h-[320px] rounded-xl border border-stone-200 bg-stone-50 p-4 shadow-sm">
